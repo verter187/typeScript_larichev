@@ -1,12 +1,12 @@
 "use strict";
-function getFullName(userEntity) {
-    return `${userEntity.firstname} ${userEntity.surname}`;
+const skills = ["Dev", "Devops", "Testing"];
+for (const skill of skills) {
+    console.log(skill.toLowerCase());
 }
-const user = {
-    firstname: "Andrew",
-    surname: "Stein",
-    sity: "moscow",
-    age: 45,
-    skills: { dev: true, devops: true },
-};
-console.log(getFullName(user));
+const test = skills
+    .filter((s) => s !== "Devops")
+    .map((s) => {
+    return 1;
+})
+    .reduce((a, b) => a + b);
+console.log(test);
