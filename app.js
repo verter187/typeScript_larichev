@@ -1,26 +1,41 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var QuestionStatus;
-(function (QuestionStatus) {
-    QuestionStatus["PUBLISHED"] = "published";
-    QuestionStatus["DRAFT"] = "draft";
-    QuestionStatus["DELETED"] = "deleted";
-})(QuestionStatus || (QuestionStatus = {}));
-function getFaqs(req) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const res = yield fetch("/faqs", {
-            method: "POST",
-            body: JSON.stringify(req),
-        });
-        const data = yield res.json();
-        return data;
-    });
+function logId(id) {
+    if (typeof id === "string") {
+        id.toLowerCase();
+    }
+    else if (typeof id === "number") {
+        console.log(id);
+    }
+    else {
+        console.log(id);
+    }
+    console.log(id);
 }
+// logId(1);
+// logId("sdfsdf");
+// logId(false);
+function logError(err) {
+    if (Array.isArray(err)) {
+        console.log(err);
+    }
+    else {
+        console.log(err);
+    }
+}
+function logObject(obj) {
+    if ("a" in obj) {
+        console.log(obj.a);
+    }
+    else {
+        console.log(obj.b);
+    }
+}
+function logMultipleIds(a, b) {
+    if (a === b) {
+        console.log(a, b);
+    }
+    else {
+        console.log(a, b);
+    }
+}
+const a = 1;
