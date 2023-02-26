@@ -1,26 +1,40 @@
-type httpMethod = "post" | "get";
-type coolString = string;
-
-function fetchWithAuth(url: string, method: httpMethod): 1 | -1 {
-  console.log(method);
-  return 1;
+interface User {
+  name: string;
+  age: number;
+  skills: string[];
+  log: (id: number) => string;
 }
 
-let method: httpMethod = "get";
-fetchWithAuth("test", method);
+interface Role {
+  roleId: number;
+}
 
-type User =
-  | { name: string; age: number; skills: string[] }
-  | { name: string; age: number };
+interface UserWithRole extends User, Role {
+  createdAt: Date;
+}
 
-type Role = { id: number; name: string };
-
-type UserWithRole = User & Role;
-// type UserWithRole = { user: User; role: Role };
+type User2 = {
+  name: string;
+  age: number;
+  skills: string[];
+  log: (id: number) => string;
+};
 
 let user: UserWithRole = {
   name: "Stein",
   age: 33,
-  id: 1,
   skills: ["dev", "devOps"],
+  roleId: 10,
+  createdAt: new Date(),
+  log(id) {
+    return "";
+  },
+};
+
+interface UserDic {
+  [index: number]: User;
+}
+
+type UserDic2 = {
+  [index: number]: User;
 };
