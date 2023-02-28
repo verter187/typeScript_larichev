@@ -1,38 +1,43 @@
-let input: unknown;
+function generateError(message: string): never {
+  throw new Error(message);
+}
 
-input = 3;
-input = ["sf", "sfd"];
+function dumpError(): never {
+  while (true) {}
+}
 
-// let res: any = input;
+function rec(): never {
+  return rec();
+}
 
-function run(i: unknown) {
-  if (typeof i == "number") {
-    i++;
-  } else {
-    i;
+// const a: never = undefined; // never не может присвоить ничего!
+
+const b: void = undefined; //void может присвоить undefined
+
+type paymentAction = "refound" | "checkout" | "reject";
+
+function processAction(action: paymentAction) {
+  switch (action) {
+    case "refound":
+      //...
+      break;
+    case "checkout":
+      //...
+      break;
+    case "reject":
+      //...
+      break;
+    default: // never покажет ошибку, если появится новое действие.
+      const _: never = action;
+      throw new Error("Нет такого action");
   }
 }
 
-run(input);
-
-async function getData() {
-  try {
-    await fetch("");
-  } catch (error) {
-    if (error instanceof Error) {
-      console.log(error.message); //Отработает нормально
-    }
+function isString(x: string | number): boolean {
+  if (typeof x === "string") {
+    return true;
+  } else if (typeof x === "number") {
+    return false;
   }
+  generateError("sfdfdsfdsfd"); //Исчерпывающая проверка с функцией, возвращающей never
 }
-
-async function getDataForce() {
-  try {
-    await fetch("");
-  } catch (error) {
-    const e = error as Error; //Будет ошибка, если error, к примеру, имеет строковой тип.
-  }
-}
-
-type U1 = unknown | null | string | number | boolean; //Union type с unknown всегда будет unknown
-
-type I1 = unknown & number; //Intersection (пересечение) unknown и любого другого типа возращает этот тип/типы.
