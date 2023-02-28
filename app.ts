@@ -1,42 +1,42 @@
-// interface User {
-//   login: string;
-//   password?: string;
-// }
-
-interface User {
-  login: string;
-  password: string | undefined;
+interface IPayment {
+  sum: number;
+  from: number;
+  to: number;
 }
 
-// type User = {
-//   login: string;
-//   password?: string;
-// };
-
-const user: User = {
-  login: "a@a.ru",
-  password: undefined,
-};
-
-//function multiply(first: number, second?: number): number {
-function multiply(first: number, second: number = 5): number {
-  if (!second) {
-    return first * first;
-  }
-  return first * second;
+enum PaymentStatus {
+  SUCCESS = "success",
+  FAILED = "failed",
 }
 
-console.log(multiply(5));
+interface IPaymentRequest extends IPayment {}
 
-interface UserPro {
-  login: string;
-  password?: { type: "primary | secondary" };
+interface IDataSuccess extends IPayment {
+  databaseId: number;
 }
 
-function testPass(user: UserPro) {
-  const t = user.password?.type;
+interface IDataFailed {
+  errorMessage: string;
+  errorCode: number;
+}
+interface IResponseSuccess {
+  status: PaymentStatus.SUCCESS;
+  data: IDataSuccess;
 }
 
-function test(param?: string) {
-  const t = param ?? multiply(5);
+interface IResponseFailed {
+  status: PaymentStatus.FAILED;
+  data: IDataFailed;
+}
+
+async function getFaqs(
+  req: IPaymentRequest
+): Promise<IResponseSuccess | IResponseFailed[]> {
+  const res = await fetch("/faqs", {
+    method: "POST",
+    body: JSON.stringify(req),
+  });
+
+  const data = await res.json();
+  return data;
 }
