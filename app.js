@@ -1,25 +1,21 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var PaymentStatus;
-(function (PaymentStatus) {
-    PaymentStatus["SUCCESS"] = "success";
-    PaymentStatus["FAILED"] = "failed";
-})(PaymentStatus || (PaymentStatus = {}));
-function getFaqs(req) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const res = yield fetch("/faqs", {
-            method: "POST",
-            body: JSON.stringify(req),
-        });
-        const data = yield res.json();
-        return data;
-    });
+function logId(id) {
+    console.log(id);
 }
+const a = logId(1);
+function multiple(f, s) {
+    if (!s) {
+        return f * f;
+    }
+}
+const f1 = () => { };
+const f2 = () => {
+    return true;
+};
+const b = f2();
+const skills = ["Dev", "Devops"];
+const user = {
+    s: ["s"],
+};
+skills.forEach((skill) => user.s.push(skill));
+console.log(user);
