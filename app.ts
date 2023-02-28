@@ -1,30 +1,38 @@
-function logId(id: string | number): void {
-  console.log(id);
-}
+let input: unknown;
 
-const a = logId(1);
+input = 3;
+input = ["sf", "sfd"];
 
-function multiple(f: number, s?: number) {
-  if (!s) {
-    return f * f;
+// let res: any = input;
+
+function run(i: unknown) {
+  if (typeof i == "number") {
+    i++;
+  } else {
+    i;
   }
 }
 
-type voidFunction = () => void;
+run(input);
 
-const f1: voidFunction = () => {};
+async function getData() {
+  try {
+    await fetch("");
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log(error.message); //Отработает нормально
+    }
+  }
+}
 
-const f2: voidFunction = () => {
-  return true;
-};
+async function getDataForce() {
+  try {
+    await fetch("");
+  } catch (error) {
+    const e = error as Error; //Будет ошибка, если error, к примеру, имеет строковой тип.
+  }
+}
 
-const b = f2();
+type U1 = unknown | null | string | number | boolean; //Union type с unknown всегда будет unknown
 
-const skills = ["Dev", "Devops"];
-
-const user = {
-  s: ["s"],
-};
-
-skills.forEach((skill) => user.s.push(skill));
-console.log(user);
+type I1 = unknown & number; //Intersection (пересечение) unknown и любого другого типа возращает этот тип/типы.
