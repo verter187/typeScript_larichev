@@ -1,37 +1,23 @@
 "use strict";
-function generateError(message) {
-    throw new Error(message);
-}
-function dumpError() {
-    while (true) { }
-}
-function rec() {
-    return rec();
-}
-// const a: never = undefined; // never не может присвоить ничего!
-const b = undefined; //void может присвоить undefined
-function processAction(action) {
-    switch (action) {
-        case "refound":
-            //...
-            break;
-        case "checkout":
-            //...
-            break;
-        case "reject":
-            //...
-            break;
-        default: // never покажет ошибку, если появится новое действие.
-            const _ = action;
-            throw new Error("Нет такого action");
+const n = null;
+// const n1: null = undefined; //можем типу null присвоить только значение типа null
+const n1 = null;
+const n2 = null; //Не может присвоить типу number и прочим (string, boolian, undefined) значение null
+const n3 = null;
+const n4 = null;
+const n5 = null;
+function getUser() {
+    if (Math.random() > 0.5) {
+        return null;
+    }
+    else {
+        return {
+            name: "Vasya",
+        };
     }
 }
-function isString(x) {
-    if (typeof x === "string") {
-        return true;
-    }
-    else if (typeof x === "number") {
-        return false;
-    }
-    generateError("sfdfdsfdsfd"); //Исчерпывающая проверка с функцией, возвращающей never
+const user = getUser();
+if (user) {
+    const n55 = user.name;
 }
+//Если нужно возращать осознано отсутствующее значени, то нужно возвращать null, а не undefined

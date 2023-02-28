@@ -1,43 +1,29 @@
-function generateError(message: string): never {
-  throw new Error(message);
+const n: null = null;
+// const n1: null = undefined; //можем типу null присвоить только значение типа null
+const n1: any = null;
+const n2: number = null; //Не может присвоить типу number и прочим (string, boolian, undefined) значение null
+const n3: string = null;
+const n4: boolean = null;
+const n5: undefined = null;
+
+// Если флагу "strictNullChecks" в файле tsconfig.json присвоить false, то ошибки не будут возникать.
+
+interface User {
+  name: string;
 }
-
-function dumpError(): never {
-  while (true) {}
-}
-
-function rec(): never {
-  return rec();
-}
-
-// const a: never = undefined; // never не может присвоить ничего!
-
-const b: void = undefined; //void может присвоить undefined
-
-type paymentAction = "refound" | "checkout" | "reject";
-
-function processAction(action: paymentAction) {
-  switch (action) {
-    case "refound":
-      //...
-      break;
-    case "checkout":
-      //...
-      break;
-    case "reject":
-      //...
-      break;
-    default: // never покажет ошибку, если появится новое действие.
-      const _: never = action;
-      throw new Error("Нет такого action");
+function getUser() {
+  if (Math.random() > 0.5) {
+    return null;
+  } else {
+    return {
+      name: "Vasya",
+    } as User;
   }
 }
 
-function isString(x: string | number): boolean {
-  if (typeof x === "string") {
-    return true;
-  } else if (typeof x === "number") {
-    return false;
-  }
-  generateError("sfdfdsfdsfd"); //Исчерпывающая проверка с функцией, возвращающей never
+const user = getUser();
+if (user) {
+  const n55 = user.name;
 }
+
+//Если нужно возращать осознано отсутствующее значени, то нужно возвращать null, а не undefined
