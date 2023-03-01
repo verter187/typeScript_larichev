@@ -1,29 +1,26 @@
-const n: null = null;
-// const n1: null = undefined; //можем типу null присвоить только значение типа null
-const n1: any = null;
-const n2: number = null; //Не может присвоить типу number и прочим (string, boolian, undefined) значение null
-const n3: string = null;
-const n4: boolean = null;
-const n5: undefined = null;
-
-// Если флагу "strictNullChecks" в файле tsconfig.json присвоить false, то ошибки не будут возникать.
+let a = 5;
+let b: string = a.toString();
+let e = new String(a);
+let f: boolean = new Boolean(a).valueOf();
+let c = "5";
+let d: number = parseInt(c);
 
 interface User {
   name: string;
-}
-function getUser() {
-  if (Math.random() > 0.5) {
-    return null;
-  } else {
-    return {
-      name: "Vasya",
-    } as User;
-  }
+  email: string;
+  login: string;
 }
 
-const user = getUser();
-if (user) {
-  const n55 = user.name;
+const user: User = { name: "Vasya", email: "vasya@mail.ru", login: "vasya" };
+
+interface Admin {
+  name: string;
+  role: number;
 }
 
-//Если нужно возращать осознано отсутствующее значени, то нужно возвращать null, а не undefined
+// const admin: Admin = { ...user, role: 1 }; - не рекомендовано, в объекте будут поля, которые мы там не ожидаем. (email, login)
+
+// правильно
+function userToAdmin(user: User): Admin {
+  return { name: user.name, role: 1 };
+}

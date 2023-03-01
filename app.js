@@ -1,23 +1,13 @@
 "use strict";
-const n = null;
-// const n1: null = undefined; //можем типу null присвоить только значение типа null
-const n1 = null;
-const n2 = null; //Не может присвоить типу number и прочим (string, boolian, undefined) значение null
-const n3 = null;
-const n4 = null;
-const n5 = null;
-function getUser() {
-    if (Math.random() > 0.5) {
-        return null;
-    }
-    else {
-        return {
-            name: "Vasya",
-        };
-    }
+let a = 5;
+let b = a.toString();
+let e = new String(a);
+let f = new Boolean(a).valueOf();
+let c = "5";
+let d = parseInt(c);
+const user = { name: "Vasya", email: "vasya@mail.ru", login: "vasya" };
+// const admin: Admin = { ...user, role: 1 }; - не рекомендовано, в объекте будут поля, которые мы там не ожидаем. (email, login)
+// правильно
+function userToAdmin(user) {
+    return { name: user.name, role: 1 };
 }
-const user = getUser();
-if (user) {
-    const n55 = user.name;
-}
-//Если нужно возращать осознано отсутствующее значени, то нужно возвращать null, а не undefined
