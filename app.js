@@ -1,13 +1,27 @@
 "use strict";
-let a = 5;
-let b = a.toString();
-let e = new String(a);
-let f = new Boolean(a).valueOf();
-let c = "5";
-let d = parseInt(c);
 const user = { name: "Vasya", email: "vasya@mail.ru", login: "vasya" };
-// const admin: Admin = { ...user, role: 1 }; - не рекомендовано, в объекте будут поля, которые мы там не ожидаем. (email, login)
-// правильно
-function userToAdmin(user) {
-    return { name: user.name, role: 1 };
+function logId(id) {
+    if (isString(id)) {
+        console.log(id);
+    }
+    else {
+        console.log(id);
+    }
+}
+function isString(x) {
+    return typeof x === "string";
+}
+function isAdmin(user) {
+    return "role" in user;
+}
+function isAdminAlternative(user) {
+    return user.role !== undefined;
+}
+function setRole(user) {
+    if (isAdmin(user)) {
+        user.role = 0;
+    }
+    else {
+        throw new Error("Пользователь не админ");
+    }
 }
