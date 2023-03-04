@@ -30,6 +30,7 @@ function isAdmin(user: User | Admin): user is Admin {
 function isAdminAlternative(user: User | Admin): user is Admin {
   return (user as Admin).role !== undefined;
 }
+
 function setRole(user: User | Admin) {
   if (isAdmin(user)) {
     user.role = 0;
