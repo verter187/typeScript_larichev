@@ -32,3 +32,32 @@ class ParsistedPayment extends Payment {
     }
   }
 }
+
+class User {
+  name: string = "user";
+
+  constructor() {
+    console.log(this.name);
+  }
+}
+
+class Admin extends User {
+  name: string = "admin";
+  constructor() {
+    super();
+    console.log(this.name);
+  }
+}
+
+new Admin();
+
+new Error("");
+
+class HttpError extends Error {
+  code: number;
+
+  constructor(message: string) {
+    super(message);
+    this.code = code ?? 500;
+  }
+}
