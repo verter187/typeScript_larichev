@@ -1,63 +1,49 @@
-type PaymentStatus = "new" | "paid";
+class User {
+  name: string;
+
+  constructor(name: string) {
+    this.name = name;
+  }
+}
+
+class Users extends Array<User> {
+  searchByName(name: string) {
+    return this.filter((u) => u.name === name);
+  }
+
+  override toString(): string {
+    return this.map((u) => u.name).join(", ");
+  }
+}
+
+const users = new Users();
+users.push(new User("Vasya"));
+users.push(new User("Bob"));
+console.log(users.toString());
+
+class UserList {
+  users: User[];
+  push(u: User) {
+    this.users.push(u);
+  }
+}
+// const usersList = new UserList();
+// usersList.push(new User("Bob"));
+// console.log(usersList);
 
 class Payment {
-  id: number;
-  status: PaymentStatus = "new";
-  constructor(id: number) {
-    this.id = id;
-  }
-
-  pay() {
-    this.status = "paid";
-  }
+  date: Date;
 }
 
-class ParsistedPayment extends Payment {
-  databaseId: number;
-  paidAt: Date;
-
-  constructor() {
-    const id = Math.random();
-    super(id);
-  }
-  save() {
-    //Сохраняет в базу
-  }
-
-  override pay(date?: Date) {
-    //super.pay();// Можно использовать метод родителя через super, но при удалении метода родителя будет возникать ошибка
-    //Поэтому правильней использовать override, он будет производить ошибки при компиляции, если исходный метод будет удален.
-    if (date) {
-      this.paidAt = date;
-    }
-  }
+class UserWithPayment extends Payment {
+  name: string;
 }
 
-class User {
-  name: string = "user";
-
-  constructor() {
-    console.log(this.name);
-  }
-}
-
-class Admin extends User {
-  name: string = "admin";
-  constructor() {
-    super();
-    console.log(this.name);
-  }
-}
-
-new Admin();
-
-new Error("");
-
-class HttpError extends Error {
-  code: number;
-
-  constructor(message: string) {
-    super(message);
-    this.code = code ?? 500;
+class UserWithPayment2 {
+  user: User;
+  payment: Payment;
+  constructor(user: User, payment: Payment) {
+    this.payment = payment;
+    this.user = user;
   }
 }

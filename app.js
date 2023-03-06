@@ -1,47 +1,36 @@
 "use strict";
-class Payment {
-    constructor(id) {
-        this.status = "new";
-        this.id = id;
-    }
-    pay() {
-        this.status = "paid";
-    }
-}
-class ParsistedPayment extends Payment {
-    constructor() {
-        const id = Math.random();
-        super(id);
-    }
-    save() {
-        //Сохраняет в базу
-    }
-    pay(date) {
-        //super.pay();// Можно использовать метод родителя через super, но при удалении метода родителя будет возникать ошибка
-        //Поэтому правильней использовать override, он будет производить ошибки при компиляции, если исходный метод будет удален.
-        if (date) {
-            this.paidAt = date;
-        }
-    }
-}
 class User {
-    constructor() {
-        this.name = "user";
-        console.log(this.name);
+    constructor(name) {
+        this.name = name;
     }
 }
-class Admin extends User {
-    constructor() {
-        super();
-        this.name = "admin";
-        console.log(this.name);
+class Users extends Array {
+    searchByName(name) {
+        return this.filter((u) => u.name === name);
+    }
+    toString() {
+        return this.map((u) => u.name).join(", ");
     }
 }
-new Admin();
-new Error("");
-class HttpError extends Error {
-    constructor(message) {
-        super(message);
-        this.code = code !== null && code !== void 0 ? code : 500;
+const users = new Users();
+users.push(new User("Vasya"));
+users.push(new User("Bob"));
+console.log(users.toString());
+class UserList {
+    push(u) {
+        this.users.push(u);
+    }
+}
+// const usersList = new UserList();
+// usersList.push(new User("Bob"));
+// console.log(usersList);
+class Payment {
+}
+class UserWithPayment extends Payment {
+}
+class UserWithPayment2 {
+    constructor(user, payment) {
+        this.payment = payment;
+        this.user = user;
     }
 }
