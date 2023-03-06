@@ -1,29 +1,29 @@
 class User {
-  skills: string[];
-  constructor() {
-    this.skills = [];
+  _login: string;
+  _password: string;
+
+  // getLogin(l: string) {
+  //   this.login = "user-" + l;
+  // }
+
+  //Если явно не укажем тип параметра, то он будет получаться из значения return getter`a
+  set login(l: string | number) {
+    this._login = "user-" + l;
   }
-  addSkill(skill: string);
-  addSkill(skill: string[]);
-  addSkill(skillOrSkills: string | string[]): void {
-    if (typeof skillOrSkills === "string") {
-      this.skills.push(skillOrSkills);
-    } else {
-      this.skills.concat(skillOrSkills);
-    }
+  //Если нас установлен getter, но не установлен setter, то свойство _login автоматически становится readonly
+  get login() {
+    return this._login;
   }
+
+  // для установки паролей лучше использовать асинхронные методы, как в примере ниже
+  set password(p: string) {}
+
+  async getPassword(p: string) {}
 }
 
-new User().addSkill("test1");
-
-function run(distance: string): string;
-function run(distance: number): number;
-function run(distance: number | string): number | string {
-  if (typeof distance === "number") {
-    return 1;
-  } else {
-    return "";
-  }
-}
-
-run();
+//setter и getter не могут быть асинхронными
+const user = new User();
+user.login = "myLogin";
+console.log(user);
+console.log(user.login);
+// user.login = 'user-'  Проблема в том, что выносим присвоение из класса, а должно быть инкапсулированно внутри класса.
