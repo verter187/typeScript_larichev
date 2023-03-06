@@ -1,37 +1,34 @@
-interface ILogger {
-  log(...args): void;
-  error(...args): void;
-}
+type PaymentStatus = "new" | "paid";
 
-class Logger implements ILogger {
-  log(...args: any[]): void {
-    console.log(...args);
+class Payment {
+  id: number;
+  status: PaymentStatus = "new";
+  constructor(id: number) {
+    this.id = id;
   }
-  // error(...args: any[]): void { //Синхронный вариант
-  //Асинхронный вариант
-  async error(...args: any[]): Promise<void> {
-    // Кинуть во внешнюю систему
-    console.log(...args);
+
+  pay() {
+    this.status = "paid";
   }
 }
 
-interface IPayble {
-  pay(paymentId: number): void;
-  price?: number;
-}
+class ParsistedPayment extends Payment {
+  databaseId: number;
+  paidAt: Date;
 
-interface IDeletable {
-  delete(): void;
-}
+  constructor() {
+    const id = Math.random();
+    super(id);
+  }
+  save() {
+    //Сохраняет в базу
+  }
 
-class User implements IPayble, IDeletable {
-  delete(): void {
-    throw new Error("Method not implemented.");
+  override pay(date?: Date) {
+    //super.pay();// Можно использовать метод родителя через super, но при удалении метода родителя будет возникать ошибка
+    //Поэтому правильней использовать override, он будет производить ошибки при компиляции, если исходный метод будет удален.
+    if (date) {
+      this.paidAt = date;
+    }
   }
-  //тип, который должен быть в аргументах, всегда должен быть таким же или шире того типа,
-  //который задан в интерфейсе
-  pay(paymentId: number | number): void {
-    ///
-  }
-  // price?: number | undefined;
 }
