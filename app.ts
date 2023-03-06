@@ -1,29 +1,37 @@
-class User {
-  _login: string;
-  _password: string;
-
-  // getLogin(l: string) {
-  //   this.login = "user-" + l;
-  // }
-
-  //Если явно не укажем тип параметра, то он будет получаться из значения return getter`a
-  set login(l: string | number) {
-    this._login = "user-" + l;
-  }
-  //Если нас установлен getter, но не установлен setter, то свойство _login автоматически становится readonly
-  get login() {
-    return this._login;
-  }
-
-  // для установки паролей лучше использовать асинхронные методы, как в примере ниже
-  set password(p: string) {}
-
-  async getPassword(p: string) {}
+interface ILogger {
+  log(...args): void;
+  error(...args): void;
 }
 
-//setter и getter не могут быть асинхронными
-const user = new User();
-user.login = "myLogin";
-console.log(user);
-console.log(user.login);
-// user.login = 'user-'  Проблема в том, что выносим присвоение из класса, а должно быть инкапсулированно внутри класса.
+class Logger implements ILogger {
+  log(...args: any[]): void {
+    console.log(...args);
+  }
+  // error(...args: any[]): void { //Синхронный вариант
+  //Асинхронный вариант
+  async error(...args: any[]): Promise<void> {
+    // Кинуть во внешнюю систему
+    console.log(...args);
+  }
+}
+
+interface IPayble {
+  pay(paymentId: number): void;
+  price?: number;
+}
+
+interface IDeletable {
+  delete(): void;
+}
+
+class User implements IPayble, IDeletable {
+  delete(): void {
+    throw new Error("Method not implemented.");
+  }
+  //тип, который должен быть в аргументах, всегда должен быть таким же или шире того типа,
+  //который задан в интерфейсе
+  pay(paymentId: number | number): void {
+    ///
+  }
+  // price?: number | undefined;
+}

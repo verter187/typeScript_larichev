@@ -8,27 +8,26 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-class User {
-    // getLogin(l: string) {
-    //   this.login = "user-" + l;
-    // }
-    //Если явно не укажем тип параметра, то он будет получаться из значения return getter`a
-    set login(l) {
-        this._login = "user-" + l;
+class Logger {
+    log(...args) {
+        console.log(...args);
     }
-    //Если нас установлен getter, но не установлен setter, то свойство _login автоматически становится readonly
-    get login() {
-        return this._login;
-    }
-    // для установки паролей лучше использовать асинхронные методы, как в примере ниже
-    set password(p) { }
-    getPassword(p) {
-        return __awaiter(this, void 0, void 0, function* () { });
+    // error(...args: any[]): void { //Синхронный вариант
+    //Асинхронный вариант
+    error(...args) {
+        return __awaiter(this, void 0, void 0, function* () {
+            // Кинуть во внешнюю систему
+            console.log(...args);
+        });
     }
 }
-//setter и getter не могут быть асинхронными
-const user = new User();
-user.login = "myLogin";
-console.log(user);
-console.log(user.login);
-// user.login = 'user-'  Проблема в том, что выносим присвоение из класса, а должно быть инкапсулированно внутри класса.
+class User {
+    delete() {
+        throw new Error("Method not implemented.");
+    }
+    //тип, который должен быть в аргументах, всегда должен быть таким же или шире того типа,
+    //который задан в интерфейсе
+    pay(paymentId) {
+        ///
+    }
+}
