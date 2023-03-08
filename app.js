@@ -1,45 +1,90 @@
 "use strict";
-var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
-    if (kind === "m") throw new TypeError("Private method is not writable");
-    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
-    return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
-};
-var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
-    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
-    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
-};
-var _Vehicle_price;
-class Vehicle {
+// interface IProduct {
+//   id: string;
+//   title: string;
+//   price: number;
+// }
+// interface IDeliveryToHome {
+//   adress: string;
+// }
+// interface IDeliveryToPoint {
+//   shopsId: number;
+// }
+// interface IDelivery extends IDeliveryToHome, IDeliveryToPoint {
+//   date: Date;
+// }
+// interface ICart {
+//   product: IProduct[];
+//   Delivery: IDelivery;
+//   addProduct(product: Product): void;
+//   removeProduct(product: Product): void;
+//   calculateСostToCart(): number;
+//   addDelivery(delivery: IDelivery): void;
+//   checkOut(): boolean;
+// }
+class Product {
+    constructor(id, title, price) {
+        this.id = id;
+        this.title = title;
+        this.price = price;
+    }
+}
+class Delivery {
+    constructor(date) {
+        this.date = date;
+    }
+}
+class HomeDelivery extends Delivery {
+    constructor(data, address) {
+        super(data);
+        this.address = address;
+    }
+}
+class ShopDelivery extends Delivery {
+    constructor(shopsId) {
+        super(new Date());
+        this.shopsId = shopsId;
+    }
+}
+class Cart {
     constructor() {
-        _Vehicle_price.set(this, void 0); //модификатор private - синтаксис js. Использовать только на фронте, в тех случаях, когда есть угроза подключения внешних скриптов.
+        this.products = [];
     }
-    set model(m) {
-        this._model = m;
-        this.run = 0;
-        __classPrivateFieldSet(this, _Vehicle_price, 100, "f");
+    addProduct(product) {
+        this.products.push(product);
     }
-    get model() {
-        return this._model;
+    deleteProductById(productId) {
+        this.products = this.products.filter((p) => p.id === productId);
     }
-    isPriceEqual(v) {
-        __classPrivateFieldGet(this, _Vehicle_price, "f") === __classPrivateFieldGet(v, _Vehicle_price, "f");
+    getSum() {
+        return this.products.reduce((accum, curr) => accum + curr.price, 0);
     }
-    //модификатор private - функция с таким модификатором доступно только внутри класса
-    addDemage(damage) {
-        this.demages = []; //Внутри класса можем обращаться к приватному свойству
+    setDelivery(delivery) {
+        this.delivery = delivery;
     }
-}
-_Vehicle_price = new WeakMap();
-new Vehicle().make = "d";
-// new Vehicle().demages = [7]; //При попытке вызвать private свойство из вне класса возникнет ошибка "Приватное свойство"
-// new Vehicle().run = 0; //При попытке вызвать protected свойство возикает ошибка "Защищенное свойство доступно только вутри класса и субклассов"
-class EuroTruck extends Vehicle {
-    setDemage() {
-        // this.demages; //Приватное свойство родительского класса Vehicle - demages, не доступно в дочернем классе.
-    }
-    setRun(km) {
-        this.run = km / 0.62; //protected свойство доступно из субкласса.
+    checkOut() {
+        if (this.products.length === 0) {
+            throw new Error("There are no products in the cart");
+        }
+        if (!this.delivery) {
+            console.log(this.delivery);
+            throw new Error("There are not set delivery");
+        }
+        return { success: true };
     }
 }
+const myCart = new Cart();
+const product1 = new Product(1, "Пицца", 500);
+const product2 = new Product(2, "Роллы", 300);
+const product3 = new Product(3, "Пироги", 700);
+myCart.addProduct(product1);
+myCart.addProduct(product2);
+myCart.addProduct(product3);
+myCart.deleteProductById(product2.id);
+// console.log(myCart.products.length);
+console.log(myCart.getSum());
+// console.log(myCart.delivery);
+const delivery = new HomeDelivery(new Date(), "moscow petrovka, 77");
+myCart.setDelivery(delivery);
+// console.log(myCart.delivery);
+console.log(myCart.checkOut());
