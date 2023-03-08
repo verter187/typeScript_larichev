@@ -1,95 +1,30 @@
-// interface IProduct {
-//   id: string;
-//   title: string;
-//   price: number;
-// }
-
-// interface IDeliveryToHome {
-//   adress: string;
-// }
-
-// interface IDeliveryToPoint {
-//   shopsId: number;
-// }
-
-// interface IDelivery extends IDeliveryToHome, IDeliveryToPoint {
-//   date: Date;
-// }
-// interface ICart {
-//   product: IProduct[];
-//   Delivery: IDelivery;
-//   addProduct(product: Product): void;
-//   removeProduct(product: Product): void;
-//   calculateСostToCart(): number;
-//   addDelivery(delivery: IDelivery): void;
-//   checkOut(): boolean;
-// }
-
-class Product {
-  constructor(public id: number, public title: string, public price: number) {}
-}
-
-class Delivery {
-  constructor(public date: Date) {}
-}
-
-class HomeDelivery extends Delivery {
-  constructor(data: Date, public address: string) {
-    super(data);
+class UserService {
+  // static name: string = "UserService";//Name конфликтует со встроенным function.name
+  static db: any;
+  static getUser(id: number) {
+    // return this.db.findById(id);
+    return UserService.db.findById(id); //Так также можно обращаться к статичным методам и изнутри класса.
   }
-}
-class ShopDelivery extends Delivery {
-  constructor(public shopsId: number) {
-    super(new Date());
+  static async getUserAsync(id: number) {
+    // return this.db.findById(id);
+    return UserService.db.findById(id); //Так также можно обращаться к статичным методам и изнутри класса.
+  }
+
+  create() {
+    UserService.db;
+  }
+
+  //Возможность инициализации для статичных свойств класса(без создания экземпляра класса)
+  static {
+    // await new Promise(); //Асинхронные методы не могут работать внутри блока static.
+    UserService.db = "sdf";
   }
 }
 
-type DeliveryOptions = HomeDelivery | ShopDelivery;
+UserService.db; //
+UserService.getUser(1); // Статичные методы можно выполнять без создания экземпляра класса.
 
-class Cart {
-  private products: Product[] = [];
-  private delivery: DeliveryOptions;
-  addProduct(product: Product): void {
-    this.products.push(product);
-  }
-  deleteProductById(productId: number): void {
-    this.products = this.products.filter((p: Product) => p.id === productId);
-  }
-  getSum(): number {
-    return this.products.reduce(
-      (accum: number, curr: Product) => accum + curr.price,
-      0
-    );
-  }
-  setDelivery(delivery: DeliveryOptions): void {
-    this.delivery = delivery;
-  }
-  checkOut(): object {
-    if (this.products.length === 0) {
-      throw new Error("There are no products in the cart");
-    }
-    if (!this.delivery) {
-      console.log(this.delivery);
-      throw new Error("There are not set delivery");
-    }
-    return { success: true };
-  }
-}
+const inst = new UserService();
+inst.create(); //При создании экземпляра класса теряем доступ к его статичным методам.
 
-const myCart = new Cart();
-const product1 = new Product(1, "Пицца", 500);
-const product2 = new Product(2, "Роллы", 300);
-const product3 = new Product(3, "Пироги", 700);
-myCart.addProduct(product1);
-myCart.addProduct(product2);
-myCart.addProduct(product3);
-myCart.deleteProductById(product2.id);
-// console.log(myCart.products.length);
-
-console.log(myCart.getSum());
-// console.log(myCart.delivery);
-
-const delivery = new HomeDelivery(new Date(), "moscow petrovka, 77");
-myCart.setDelivery(delivery);
-// console.log(myCart.delivery);
-console.log(myCart.checkOut());
+// В js не нужно делать классы асинхронными, можно использовать отдельные асинхронные методы класса.
