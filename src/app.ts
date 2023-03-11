@@ -1,26 +1,14 @@
-class Vehicle {
-  run: number;
+const data = [
+  { id: 1, name: "John" },
+  { id: 3, name: "Peter" },
+  { id: 2, name: "Vasya" },
+];
+interface ID {
+  id: number;
 }
 
-function kmToMiles<T extends Vehicle>(vehicle: T): T {
-  vehicle.run = vehicle.run / 0.62;
-  return vehicle;
+function sort<T extends ID>(data: T[], type: "asc" | "desc" = "asc"): T[] {
+  return data.sort((a, b) => (type === "desc" ? b.id - a.id : a.id - b.id));
 }
 
-class LCV extends Vehicle {
-  capacity: number;
-}
-
-const vehicle = kmToMiles(new Vehicle());
-const lcv1 = kmToMiles(new LCV());
-const lcv2 = kmToMiles({ run: 1 });
-const lcv3 = kmToMiles({ test: 1 });
-
-function logId<T extends string | number, Y>(
-  id: T,
-  additionalData: Y
-): { id: T; data: Y } {
-  console.log(id);
-  console.log(additionalData);
-  return { id, data: additionalData };
-}
+console.log(sort(data, "asc"));
