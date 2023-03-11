@@ -1,25 +1,18 @@
 "use strict";
-function toString(data) {
-    if (Array.isArray(data)) {
-        return data.toString();
-    }
-    switch (typeof data) {
-        case "string":
-            return data;
-        case "number":
-        case "boolean":
-        case "bigint":
-        case "symbol":
-        case "function":
-            return data.toString();
-        case "object":
-            return JSON.stringify(data);
-        default:
-            undefined;
-    }
+function logMiddleware(data) {
+    console.log(data);
+    return data;
 }
-console.log(toString({ a: 7, b: 8, c: 9 }));
-console.log(toString([1, 2, 3, 4, 5]));
-console.log(toString(true));
-console.log(toString(2000));
-console.log(toString(null));
+const res = logMiddleware(10);
+function getSplitedHalf(data) {
+    const l = data.length / 2;
+    return data.splice(0, l);
+}
+console.log(getSplitedHalf([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]));
+const split = getSplitedHalf;
+const logLine = {
+    timeStamp: new Date(),
+    data: {
+        a: 1,
+    },
+};
