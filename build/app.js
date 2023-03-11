@@ -1,10 +1,18 @@
 "use strict";
-const data = [
-    { id: 1, name: "John" },
-    { id: 3, name: "Peter" },
-    { id: 2, name: "Vasya" },
-];
-function sort(data, type = "asc") {
-    return data.sort((a, b) => (type === "desc" ? b.id - a.id : a.id - b.id));
+class Resp {
+    constructor(data, error) {
+        if (data) {
+            this.data = data;
+        }
+        if (error) {
+            this.error = error;
+        }
+    }
 }
-console.log(sort(data, "asc"));
+const res = new Resp("data");
+class HTTPResp extends Resp {
+    setCode(code) {
+        this.code = code;
+    }
+}
+const res2 = new HTTPResp();

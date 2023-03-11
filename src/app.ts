@@ -1,14 +1,23 @@
-const data = [
-  { id: 1, name: "John" },
-  { id: 3, name: "Peter" },
-  { id: 2, name: "Vasya" },
-];
-interface ID {
-  id: number;
+class Resp<D, E> {
+  data?: D;
+  error?: E;
+  constructor(data?: D, error?: E) {
+    if (data) {
+      this.data = data;
+    }
+    if (error) {
+      this.error = error;
+    }
+  }
 }
 
-function sort<T extends ID>(data: T[], type: "asc" | "desc" = "asc"): T[] {
-  return data.sort((a, b) => (type === "desc" ? b.id - a.id : a.id - b.id));
+const res = new Resp<string, number>("data");
+
+class HTTPResp<F> extends Resp<string, number> {
+  code: F;
+  setCode(code: F) {
+    this.code = code;
+  }
 }
 
-console.log(sort(data, "asc"));
+const res2 = new HTTPResp();
