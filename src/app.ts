@@ -1,26 +1,18 @@
-interface IForm {
-  name: string;
-  password: string;
-  age: number;
-}
+type ReadOrWrite = "read" | "write";
+type Bulk = "bulk" | "";
 
-const form: IForm = {
-  name: "Vasya",
-  password: "123",
-  age: 30,
+type Access = `can${Capitalize<ReadOrWrite>}${Capitalize<Bulk>}`;
+
+type ReadOrWriteBulk<T> = T extends `can${infer R}` ? R : never;
+
+type T = ReadOrWriteBulk<Access>;
+
+type ErrorOrSuccess = "error" | "success";
+
+type ResponseT = {
+  result: `http${Capitalize<ErrorOrSuccess>}`;
 };
 
-const formValidation: Validation<IForm> = {
-  name: { isValid: true },
-  password: { isValid: false, errorMessage: "Должен быть длинее 5 символов" },
+const a: ResponseT = {
+  result: "httpSuccess",
 };
-
-type Validation<T> = {
-  [K in keyof T]:
-    | {
-        isValid: true;
-      }
-    | { isValid: false; errorMessage: string };
-};
-
-type UserAccess2 = Validation<IForm>;
