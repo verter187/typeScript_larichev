@@ -1,22 +1,26 @@
-type Modifier = "read" | "update" | "create";
+interface IForm {
+  name: string;
+  password: string;
+  age: number;
+}
 
-type UserRoles = {
-  customers?: Modifier;
-  projects?: Modifier;
-  adminPanel?: Modifier;
+const form: IForm = {
+  name: "Vasya",
+  password: "123",
+  age: 30,
 };
 
-type ModifierToAccess<Type> = {
-  +readonly [Property in keyof Type as Exclude<
-    `canAccess${string & Property}`,
-    "canAccessadminPanel"
-  >]-?: boolean;
+const formValidation: Validation<IForm> = {
+  name: { isValid: true },
+  password: { isValid: false, errorMessage: "Должен быть длинее 5 символов" },
 };
 
-type UserAccess2 = ModifierToAccess<UserRoles>;
-
-type UserAccess1 = {
-  customers?: boolean;
-  projects?: boolean;
-  adminPanel?: boolean;
+type Validation<T> = {
+  [K in keyof T]:
+    | {
+        isValid: true;
+      }
+    | { isValid: false; errorMessage: string };
 };
+
+type UserAccess2 = Validation<IForm>;
