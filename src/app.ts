@@ -1,18 +1,12 @@
-type ReadOrWrite = "read" | "write";
-type Bulk = "bulk" | "";
+interface User {
+  name: string;
+  age?: number;
+  email: string;
+}
 
-type Access = `can${Capitalize<ReadOrWrite>}${Capitalize<Bulk>}`;
+type p = Partial<User>; //Partial делает все поля будут необязательными
+const p: p = {};
 
-type ReadOrWriteBulk<T> = T extends `can${infer R}` ? R : never;
-
-type T = ReadOrWriteBulk<Access>;
-
-type ErrorOrSuccess = "error" | "success";
-
-type ResponseT = {
-  result: `http${Capitalize<ErrorOrSuccess>}`;
-};
-
-const a: ResponseT = {
-  result: "httpSuccess",
-};
+type required = Required<User>; //Required делает все поля обязательными
+type readonly = Readonly<User>; //Readonly делает все поля только для чтения
+type requiredAndReadonly = Required<Readonly<User>>; //Required<Readonly делает все поля только для чтения и обязательными
