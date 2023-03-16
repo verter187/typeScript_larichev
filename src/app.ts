@@ -1,12 +1,12 @@
-interface User {
-  name: string;
-  age?: number;
-  email: string;
+interface PaymentPersistent {
+  id: number;
+  sum: number;
+  from: string;
+  to: string;
 }
 
-type p = Partial<User>; //Partial делает все поля будут необязательными
-const p: p = {};
+type Payment = Omit<PaymentPersistent, "id">;
+type PaymentRequisits = Pick<PaymentPersistent, "from" | "to">;
 
-type required = Required<User>; //Required делает все поля обязательными
-type readonly = Readonly<User>; //Readonly делает все поля только для чтения
-type requiredAndReadonly = Required<Readonly<User>>; //Required<Readonly делает все поля только для чтения и обязательными
+type ExtractEx = Extract<"from" | "to" | Payment, string>;
+type ExcludeEx = Exclude<"from" | "to" | Payment, string>;
