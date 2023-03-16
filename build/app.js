@@ -6,19 +6,45 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 // @nullUser
-let UserService = class UserService {
-    constructor() {
-        this.users = 1000;
-    }
+let UserService = 
+// @threeUserAdvanced
+// @setUserAdvanced(4)
+class UserService {
     getUsersInDatabase() {
         return this.users;
     }
 };
 UserService = __decorate([
-    threeUserAdvanced
+    setUsers(2),
+    log()
+    // @threeUserAdvanced
+    // @setUserAdvanced(4)
 ], UserService);
 function nullUser(target) {
     target.prototype.users = 0;
+}
+function setUsers(users) {
+    console.log("setUsers init");
+    return (target) => {
+        console.log("setUsers run");
+        target.prototype.users = users;
+    };
+}
+function log() {
+    console.log("log init");
+    return (target) => {
+        console.log("log run");
+    };
+}
+function setUserAdvanced(users) {
+    return (constructor) => {
+        return class extends constructor {
+            constructor() {
+                super(...arguments);
+                this.users = users;
+            }
+        };
+    };
 }
 function threeUserAdvanced(constructor) {
     return class extends constructor {
