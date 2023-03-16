@@ -1,18 +1,25 @@
-class User {
-  constructor(public id: number, public name: string) {}
+interface IUserService {
+  users: number;
+  getUsersInDatabase(): number;
 }
 
-function getData(id: number): User {
-  return new User(id, "Vasya");
+class UserService implements IUserService {
+  users: number = 1000;
+
+  getUsersInDatabase(): number {
+    return this.users;
+  }
 }
 
-type RT = ReturnType<typeof getData>;
-type RT2 = ReturnType<() => void>;
-type RT3 = ReturnType<<T>() => T>;
-type RT4 = ReturnType<<T extends string>() => T>;
+function nullUser(obj: IUserService): IUserService {
+  obj.users = 0;
+  return obj;
+}
 
-type PT = Parameters<typeof getData>;
-type first = PT[0];
+function logUsers(obj: IUserService): IUserService {
+  console.log("Users: ", obj.users);
+  return obj;
+}
 
-type CP = ConstructorParameters<typeof User>;
-type IT = InstanceType<typeof User>;
+console.log(new UserService().getUsersInDatabase());
+console.log(logUsers(nullUser(new UserService())).getUsersInDatabase());
