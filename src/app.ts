@@ -3,32 +3,36 @@ interface IUserService {
   getUsersInDatabase(): number;
 }
 class UserService implements IUserService {
-  users: number = 1000;
+  @Max(100)
+  users: number;
 
-  @Catch({ rethrow: false })
   getUsersInDatabase(): number {
     throw new Error("Ошибка!");
   }
 }
-function Catch({ rethrow }: { rethrow: boolean } = { rethrow: true }) {
+function Max(max: number) {
   return (
     target: Object,
-    _: string | symbol,
-    descriptor: TypedPropertyDescriptor<(...args: any[]) => any>
+    propertyKey: string | symbol
   ): TypedPropertyDescriptor<(...args: any[]) => any> | void => {
-    const method = descriptor.value;
-    descriptor.value = async (...args: any[]) => {
-      try {
-        return await method?.apply(target, args);
-      } catch (e) {
-        if (e instanceof Error) {
-          console.log(e.message);
-          if (rethrow) {
-            throw e;
-          }
-        }
+    let value: number;
+    const setter = function (newValue: number) {
+      if (newValue > max) {
+        console.log(`Нельзя установить значение больше ${max}`);
+      } else {
+        value = newValue;
       }
     };
+    const getter = function () {
+      return value;
+    };
+
+    Object.defineProperty(target, propertyKey, { set: setter, get: getter });
   };
 }
-console.log(new UserService().getUsersInDatabase());
+const userService = new UserService();
+
+userService.users = 1;
+console.log(userService.users);
+userService.users = 1000;
+console.log(userService.users);
