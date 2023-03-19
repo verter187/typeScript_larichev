@@ -2,27 +2,26 @@ interface IUserService {
   users: number;
   getUsersInDatabase(): number;
 }
-// @nullUser
-@CreatedAt
 class UserService implements IUserService {
-  users: number;
+  users: number = 1000;
 
+  @Log
   getUsersInDatabase(): number {
-    return this.users;
+    throw new Error("Error!");
   }
 }
-function SetCreatedAt(createdAt: Date) {
-  return (target: Function) => {
-    target.prototype.createdAt = createdAt;
-  };
-}
-function CreatedAt<T extends { new (...args: any[]): {} }>(constructor: T) {
-  return class extends constructor {
-    createdAt = new Date();
+function Log(
+  target: Object,
+  propertyKey: string | symbol,
+  descriptor: TypedPropertyDescriptor<(...args: any[]) => any>
+): TypedPropertyDescriptor<(...args: any[]) => any> | void {
+  console.log(target);
+  console.log(propertyKey);
+  console.log(descriptor);
+
+  descriptor.value = () => {
+    console.log("no error");
   };
 }
 
-type CreatedAt = {
-  createdAt: Date;
-};
-console.log((new UserService() as IUserService & CreatedAt).createdAt);
+console.log(new UserService().getUsersInDatabase());
