@@ -1,5 +1,8 @@
+import "reflect-metadata";
+
+const POSITIVE_METADATA_KEY = Symbol("POSITIVE_METADATA_KEY");
+
 interface IUserService {
-  users: number;
   getUsersInDatabase(): number;
 }
 class UserService implements IUserService {
@@ -9,7 +12,8 @@ class UserService implements IUserService {
     return this._users;
   }
 
-  setUsersInDatabase(@Positive() num: number, @Positive() _: number): void {
+  @Validate()
+  setUsersInDatabase(@Positive() num: number): void {
     this._users = num;
   }
 }
@@ -19,9 +23,49 @@ function Positive() {
     propertyKey: string | symbol,
     parameterIndex: number
   ) => {
-    console.log(target);
-    console.log(propertyKey);
-    console.log(parameterIndex);
+    console.log(Reflect.getOwnMetadata("design:type", target, propertyKey));
+    console.log(
+      Reflect.getOwnMetadata("design:paramtypes", target, propertyKey)
+    );
+    console.log(
+      Reflect.getOwnMetadata("design:returntype", target, propertyKey)
+    );
+    let existParams: number[] =
+      Reflect.getOwnMetadata(POSITIVE_METADATA_KEY, target, propertyKey) || [];
+    existParams.push(parameterIndex);
+    Reflect.defineMetadata(
+      POSITIVE_METADATA_KEY,
+      existParams,
+      target,
+      propertyKey
+    );
+  };
+}
+
+function Validate() {
+  return (
+    target: Object,
+    propertyKey: string | symbol,
+    descriptor: TypedPropertyDescriptor<(...args: any[]) => any>
+  ) => {
+    let method = descriptor.value;
+    descriptor.value = function (...args: any) {
+      let positiveParams: number[] = Reflect.getOwnMetadata(
+        POSITIVE_METADATA_KEY,
+        target,
+        propertyKey
+      );
+      if (positiveParams) {
+        for (let index of positiveParams) {
+          if (args[index] < 0) {
+            throw new Error("The number must be greater than ziro");
+          }
+        }
+      }
+      return method?.apply(this, args);
+    };
   };
 }
 const userService = new UserService();
+console.log(userService.setUsersInDatabase(10));
+// console.log(userService.setUsersInDatabase(-1));
