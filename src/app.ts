@@ -1,9 +1,3 @@
-namespace A {
-  export const a = 5;
-
-  export interface B {
-    c: number;
-  }
-}
+import { A } from "./module/app2";
 
 console.log(A.a);

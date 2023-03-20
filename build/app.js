@@ -1,6 +1,4 @@
 "use strict";
-var A;
-(function (A) {
-    A.a = 5;
-})(A || (A = {}));
-console.log(A.a);
+Object.defineProperty(exports, "__esModule", { value: true });
+const app2_1 = require("./module/app2");
+console.log(app2_1.A.a);
