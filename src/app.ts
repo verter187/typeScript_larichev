@@ -1,23 +1,9 @@
-function Uni(name: string): any {
-  console.log(`Init: ${name}`);
-  return function () {
-    console.log(`Call: ${name}`);
-  };
+namespace A {
+  export const a = 5;
+
+  export interface B {
+    c: number;
+  }
 }
 
-@Uni("Class")
-class MyClass {
-  @Uni("Property")
-  props?: any;
-
-  @Uni("Property static")
-  static prop2?: any;
-
-  @Uni("Method static")
-  static method2(@Uni("Method param") _: any) {}
-
-  @Uni("Method")
-  method(@Uni("Method param") _: any) {}
-
-  constructor(@Uni("constuctor param") _: any) {}
-}
+console.log(A.a);
