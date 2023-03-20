@@ -1,16 +1,6 @@
-import run, { a, B } from "./module/app2.js";
-import runing from "./module/app2.js";
-import * as all from "./module/app2.js";
-import { test as Cl } from "./module/app2.js";
-import type { MyType } from "./module/app2.js";
-
-const d: B = { c: 7 };
-const z: MyType = 8;
-
-run();
-runing();
-console.log(a);
-Cl();
-console.log(d);
-console.log(all.a);
-console.log(all.default());
+////@ts-ignore //Вариант 1
+//Вариант 2: объявить модуль в файле types.d.ts
+import { toJson } from "really-relaxed-json";
+const rjson = "[ one two three {foo:bar} ]";
+const json = toJson(rjson);
+console.log(json);
