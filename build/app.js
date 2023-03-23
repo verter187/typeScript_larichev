@@ -1,66 +1,36 @@
 "use strict";
-class Task {
-  constructor(priority) {
-    this.priority = priority;
-  }
+class Form {
+    constructor(name) {
+        this.name = name;
+    }
 }
-class TaskList {
-  constructor() {
-    this.tasks = [];
-  }
-  sortByPriority() {
-    this.tasks = this.tasks.sort((a, b) => {
-      if (a.priority > b.priority) {
-        return 1;
-      } else if ((a.priority = b.priority)) {
-        return 0;
-      } else {
-        return -1;
-      }
-    });
-  }
-  addTask(task) {
-    this.tasks.push(task);
-  }
-  getTask() {
-    return this.tasks;
-  }
-  count() {
-    return this.tasks.length;
-  }
-  getIterator() {
-    return new PriorityTaskIterator(this);
-  }
+class SaveForm {
+    save(form) {
+        const res = this.fill(form);
+        this.log(res);
+        this.send(res);
+    }
+    log(data) {
+        console.log(data);
+    }
 }
-class PriorityTaskIterator {
-  constructor(tasksList) {
-    this.position = 0;
-    tasksList.sortByPriority();
-    this.tasksList = tasksList;
-  }
-  current() {
-    return this.tasksList.getTask()[this.position];
-  }
-  next() {
-    this.position += 1;
-    return this.tasksList.getTask()[this.position];
-  }
-  prev() {
-    this.position -= 1;
-    return this.tasksList.getTask()[this.position];
-  }
-  index() {
-    return this.position;
-  }
+class FirstAPI extends SaveForm {
+    fill(form) {
+        return form.name;
+    }
+    send(data) {
+        console.log(`Отправляю ${data}`);
+    }
 }
-const taskList = new TaskList();
-taskList.addTask(new Task(8));
-taskList.addTask(new Task(1));
-taskList.addTask(new Task(3));
-console.log(taskList);
-// const iterator = taskList.getIterator();
-// console.log(iterator.current());
-// console.log(iterator.next());
-// console.log(iterator.next());
-// console.log(iterator.prev());
-// console.log(iterator.index());
+class SecondAPI extends SaveForm {
+    fill(form) {
+        return { fio: form.name };
+    }
+    send(data) {
+        console.log(`Отправляю ${data}`);
+    }
+}
+const form1 = new FirstAPI();
+form1.save(new Form("Vasya"));
+const form2 = new SecondAPI();
+form2.save(new Form("Vasya"));
