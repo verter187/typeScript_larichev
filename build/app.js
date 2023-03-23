@@ -1,64 +1,58 @@
 "use strict";
-class User {
-    constructor(userId) {
-        this.userId = userId;
+class DocumentItem {
+    constructor(props) {
+        this.setState(new DraftDocumentItemState());
+    }
+    getState() {
+        return this.state;
+    }
+    setState(state) {
+        this.state = state;
+        this.state.setContext(this);
+    }
+    publishDoc() {
+        this.state.publish();
+    }
+    deleteDoc() {
+        this.state.delete();
     }
 }
-class CommandHistory {
+class DocumentItemState {
+    setContext(item) {
+        this.item = item;
+    }
+}
+class DraftDocumentItemState extends DocumentItemState {
     constructor() {
-        this.commands = [];
+        super();
+        this.name = "DraftDocument";
     }
-    push(command) {
-        this.commands.push(command);
+    publish() {
+        console.log(`На сайт отправлен текст ${this.item.text}`);
+        this.item.setState(new PublishDocumentItemState());
     }
-    remove(command) {
-        this.commands = this.commands.filter((c) => c.commandId !== command.commandId);
-    }
-}
-class Command {
-    constructor(history) {
-        this.history = history;
-        this.commandId = Math.random();
+    delete() {
+        console.log("Документ удален");
     }
 }
-class AddUserCommand extends Command {
-    constructor(user, receiver, history) {
-        super(history);
-        this.user = user;
-        this.receiver = receiver;
-    }
-    execute() {
-        this.receiver.saveUser(this.user);
-        this.history.push(this);
-    }
-    undo() {
-        this.receiver.deleteUser(this.user.userId);
-        this.history.remove(this);
-    }
-}
-class UserService {
-    saveUser(user) {
-        console.log(`Сохраняю пользователя с id ${user.userId}`);
-    }
-    deleteUser(userId) {
-        console.log(`Удаляю пользователя с id ${userId}`);
-    }
-}
-class Controller {
+class PublishDocumentItemState extends DocumentItemState {
     constructor() {
-        this.history = new CommandHistory();
+        super();
+        this.name = "PublishDocument";
     }
-    addReceiver(receiver) {
-        this.receiver = receiver;
+    publish() {
+        console.log("Нельзя публиковать опубликованный документ");
     }
-    run() {
-        const addUserCommand = new AddUserCommand(new User(1), this.receiver, this.history);
-        addUserCommand.execute();
-        console.log(addUserCommand.history);
-        addUserCommand.undo();
-        console.log(addUserCommand.history);
+    delete() {
+        console.log("Снято с публикации");
+        this.item.setState(new DraftDocumentItemState());
     }
 }
-const controller = new Controller();
-controller.addReceiver(new UserService());
-controller.run();
+const item = new DocumentItem();
+item.text = "My post!";
+console.log(item.getState());
+item.publishDoc();
+console.log(item.getState());
+item.publishDoc();
+item.deleteDoc();
+console.log(item.getState());
